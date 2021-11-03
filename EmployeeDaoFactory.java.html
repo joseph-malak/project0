@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>EmployeeDaoFactory.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+EmployeeDaoFactory.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.demo2</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">EmployeeDaoFactory {</span>
+    <span class="s0">private static </span><span class="s1">EmployeeDao dao</span><span class="s0">;</span>
+
+    <span class="s0">private </span><span class="s1">EmployeeDaoFactory() {</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public  static </span><span class="s1">EmployeeDao getEmployeeDao(){</span>
+        <span class="s0">if</span><span class="s1">(dao == </span><span class="s0">null</span><span class="s1">){</span>
+            <span class="s1">dao = </span><span class="s0">new </span><span class="s1">EmployeeDaoImpl()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">dao</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

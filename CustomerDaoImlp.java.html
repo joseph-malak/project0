@@ -1,0 +1,223 @@
+<html>
+<head>
+<title>CustomerDaoImlp.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CustomerDaoImlp.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.demo2</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">org.w3c.dom.ls.LSOutput</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.sql.*</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Random</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.Scanner</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">CustomerDaoImlp </span><span class="s0">implements </span><span class="s1">CustomerDao {</span>
+    <span class="s1">Connection connection</span><span class="s0">;</span>
+    <span class="s0">public double </span><span class="s1">balance</span><span class="s0">;</span>
+    <span class="s1">Scanner scanner = </span><span class="s0">new </span><span class="s1">Scanner(System.in)</span><span class="s0">;</span>
+
+    <span class="s1">Random rand = </span><span class="s0">new </span><span class="s1">Random()</span><span class="s0">;</span>
+    <span class="s0">public int </span><span class="s1">randomValue = (</span><span class="s0">int</span><span class="s1">) Math.floor(Math.random() * (</span><span class="s2">100000</span><span class="s1">))</span><span class="s0">;</span>
+    <span class="s1">Customer customer = </span><span class="s0">new </span><span class="s1">Customer()</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">CustomerDaoImlp() {</span>
+        <span class="s0">this</span><span class="s1">.connection = ConnectionFactory.getConnection()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public boolean </span><span class="s1">getCustomerAccount(String userName</span><span class="s0">, </span><span class="s1">String password) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;select * from user where user_name = ? and password = ?&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setString(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">userName)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setString(</span><span class="s2">2</span><span class="s0">, </span><span class="s1">password)</span><span class="s0">;</span>
+        <span class="s1">ResultSet resultSet = preparedStatement.executeQuery()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(resultSet.next()) {</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Login Successful&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return true;</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;That username, password combination is incorrect&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">return false;</span>
+
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">NewAccount(</span><span class="s0">int </span><span class="s1">numbers</span><span class="s0">, </span><span class="s1">String one</span><span class="s0">, </span><span class="s1">String two) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;insert into user values (?,?, ?)&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">numbers)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setString(</span><span class="s2">2</span><span class="s0">, </span><span class="s1">one)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setString(</span><span class="s2">3</span><span class="s0">, </span><span class="s1">two)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">count = preparedStatement.executeUpdate()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(count &gt; </span><span class="s2">0</span><span class="s1">)</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Customer saved&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">else</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Oops! something went wrong&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public void </span><span class="s1">NewBankAccount(</span><span class="s0">int </span><span class="s1">numbers</span><span class="s0">, </span><span class="s1">Double one</span><span class="s0">, int </span><span class="s1">passcode) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;insert into user values (?,?, ?,?)&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">numbers)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setDouble(</span><span class="s2">2</span><span class="s0">, </span><span class="s1">one)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setString(</span><span class="s2">3</span><span class="s0">, </span><span class="s3">&quot;false&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">4</span><span class="s0">, </span><span class="s1">passcode)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">count = preparedStatement.executeUpdate()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(count &gt; </span><span class="s2">0</span><span class="s1">)</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Account saved&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">else</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Oops! something went wrong&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">viewAccount(</span><span class="s0">int </span><span class="s1">accountId) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;select balance from accounts where id = ?&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">accountId)</span><span class="s0">;</span>
+        <span class="s1">ResultSet resultSet = preparedStatement.executeQuery()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(resultSet.next()) {</span>
+            <span class="s1">System.out.println(resultSet.getString(</span><span class="s2">1</span><span class="s1">))</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;An problem has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">deposit(</span><span class="s0">int </span><span class="s1">id</span><span class="s0">, double </span><span class="s1">transaction) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;select balance from accounts where id = ?&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">id)</span><span class="s0">;</span>
+        <span class="s1">ResultSet resultSet = preparedStatement.executeQuery()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(resultSet.next()) {</span>
+            <span class="s1">balance = resultSet.getInt(</span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                    <span class="s1">String sql2 = </span><span class="s3">&quot;select activated from accounts where activated = ?&quot;</span><span class="s0">;</span>
+                    <span class="s1">PreparedStatement preparedStatement2 = connection.prepareStatement(sql2)</span><span class="s0">;</span>
+                    <span class="s1">preparedStatement2.setString(</span><span class="s2">1</span><span class="s0">, </span><span class="s3">&quot;true&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ResultSet resultSet3 = preparedStatement.executeQuery()</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(resultSet3.next()) {</span>
+                        <span class="s1">balance += transaction</span><span class="s0">;</span>
+                        <span class="s1">String sql4 = </span><span class="s3">&quot;Update accounts set balance = ?&quot;</span><span class="s0">;</span>
+                        <span class="s1">PreparedStatement preparedStatement4 = connection.prepareStatement(sql4)</span><span class="s0">;</span>
+                        <span class="s1">preparedStatement4.setDouble(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">balance)</span><span class="s0">;</span>
+                        <span class="s0">int </span><span class="s1">count = preparedStatement4.executeUpdate()</span><span class="s0">;</span>
+                        <span class="s0">if </span><span class="s1">(count &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                            <span class="s1">System.out.println(</span><span class="s3">&quot;Transaction Complete&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                            <span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">}</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(</span><span class="s3">&quot;An error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">withdraw(</span><span class="s0">int </span><span class="s1">id</span><span class="s0">, double </span><span class="s1">transaction) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;select balance from accounts where id = ?&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">id)</span><span class="s0">;</span>
+        <span class="s1">ResultSet resultSet = preparedStatement.executeQuery()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(resultSet.next()) {</span>
+            <span class="s1">balance = resultSet.getInt(</span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                <span class="s1">balance -= transaction</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(balance &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                    <span class="s1">String sql2 = </span><span class="s3">&quot;select activated from accounts where activated = ?&quot;</span><span class="s0">;</span>
+                    <span class="s1">PreparedStatement preparedStatement2 = connection.prepareStatement(sql2)</span><span class="s0">;</span>
+                    <span class="s1">preparedStatement2.setString(</span><span class="s2">1</span><span class="s0">, </span><span class="s3">&quot;true&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">ResultSet resultSet3 = preparedStatement.executeQuery()</span><span class="s0">;</span>
+                    <span class="s0">if </span><span class="s1">(resultSet3.next()) {</span>
+                        <span class="s1">String sql3 = </span><span class="s3">&quot;Update accounts set balance = ?&quot;</span><span class="s0">;</span>
+                        <span class="s1">PreparedStatement preparedStatement3 = connection.prepareStatement(sql3)</span><span class="s0">;</span>
+                        <span class="s1">preparedStatement3.setDouble(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">balance)</span><span class="s0">;</span>
+                        <span class="s0">int </span><span class="s1">count = preparedStatement3.executeUpdate()</span><span class="s0">;</span>
+                        <span class="s0">if </span><span class="s1">(count &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+                            <span class="s1">System.out.println(</span><span class="s3">&quot;Transaction Complete&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                            <span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">}</span>
+                    <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                        <span class="s1">System.out.println(</span><span class="s3">&quot;An problem has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s3">&quot;Invalid transaction&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;An problem has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">transferOut(</span><span class="s0">int </span><span class="s1">account_id</span><span class="s0">, double </span><span class="s1">amount</span><span class="s0">, int </span><span class="s1">account2_id) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+
+        <span class="s1">String sql1 = </span><span class="s3">&quot;insert into transactions values (?,?,?,?,?)&quot;</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement4 = connection.prepareStatement(sql1)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement4.setInt(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">account_id)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement4.setDouble(</span><span class="s2">2</span><span class="s0">, </span><span class="s1">amount)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement4.setString(</span><span class="s2">3</span><span class="s0">, </span><span class="s3">&quot;true&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement4.setDouble(</span><span class="s2">4</span><span class="s0">, </span><span class="s1">randomValue)</span><span class="s0">;</span>
+        <span class="s1">preparedStatement4.setInt(</span><span class="s2">5</span><span class="s0">, </span><span class="s1">account2_id)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">count2 = preparedStatement4.executeUpdate()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(count2 &gt; </span><span class="s2">0</span><span class="s1">) {</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;Your transaction ID is :&quot; </span><span class="s1">+ randomValue)</span><span class="s0">;</span>
+            <span class="s1">withdraw(account_id</span><span class="s0">, </span><span class="s1">amount)</span><span class="s0">;</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;transaction complete:&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+            <span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+
+
+    <span class="s0">public void </span><span class="s1">transferAccept(</span><span class="s0">int </span><span class="s1">transfer_id) </span><span class="s0">throws </span><span class="s1">SQLException {</span>
+
+        <span class="s1">String sql6 = </span><span class="s3">&quot;Update transactions set pending = 'false' where transaction_id = &quot; </span><span class="s1">+ transfer_id</span><span class="s0">;</span>
+        <span class="s1">PreparedStatement preparedStatement6 = connection.prepareStatement(sql6)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">count = preparedStatement6.executeUpdate()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(count &gt;</span><span class="s2">0</span><span class="s1">) {</span>
+
+            <span class="s0">int </span><span class="s1">account_id</span><span class="s0">;</span>
+            <span class="s1">String sql5 = </span><span class="s3">&quot;select account_id from transactions where transaction_id = &quot; </span><span class="s1">+ transfer_id</span><span class="s0">;</span>
+            <span class="s1">PreparedStatement preparedStatement5 = connection.prepareStatement(sql5)</span><span class="s0">;</span>
+            <span class="s1">ResultSet resultSet2 = preparedStatement5.executeQuery()</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(resultSet2.next()) {</span>
+                <span class="s1">account_id = resultSet2.getInt(</span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">String sql = </span><span class="s3">&quot;select amount from transactions where transaction_id = &quot; </span><span class="s1">+ transfer_id</span><span class="s0">;</span>
+                <span class="s1">PreparedStatement preparedStatement = connection.prepareStatement(sql)</span><span class="s0">;</span>
+                <span class="s1">ResultSet resultSet = preparedStatement.executeQuery()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(resultSet.next()) {</span>
+                    <span class="s1">balance = resultSet.getInt(</span><span class="s2">1</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">deposit(account_id</span><span class="s0">, </span><span class="s1">balance)</span><span class="s0">;</span>
+                <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">System.out.println(</span><span class="s3">&quot;An problem has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">} </span><span class="s0">else </span><span class="s1">{</span>
+                <span class="s1">System.out.println(</span><span class="s3">&quot;an error has occurred&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
